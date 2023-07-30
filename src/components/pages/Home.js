@@ -11,20 +11,7 @@ const Home = () => {
 
             <Navigation />
             <h1>Home</h1>
-            <Row>
-                <Col xs={12} md={8}>
-                    <Table striped bordered hover>
-                        <thead>
-                            <tr>
-                                <th>First Name</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                           <tr><td>test</td></tr>
-                        </tbody>
-                    </Table>
-                </Col>
-            </Row>
+            <div>This Web this page is under construction </div>
         </Container>
 
 
