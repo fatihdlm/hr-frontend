@@ -1,6 +1,7 @@
 import axios from 'axios';
 
 const EMPLOYEE_API_REST_URL = "/employees";
+const EMPLOYEE_ADD_API_REST_URL = "/addEmployee";
 
 
 
@@ -10,7 +11,7 @@ export const getEmployes = () => {
 
 
 //for posting
-//export const saveEmployee = (body) => {
-//    return axios.pots(BOOK_API_REST_URL,body);
-//};
+export const saveEmployee = (body) => {
+   return axios.pots(EMPLOYEE_ADD_API_REST_URL,body);
+};
 

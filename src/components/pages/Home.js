@@ -1,17 +1,15 @@
 import React from 'react'
 import Navigation from '../navigation/Navigation'
-import Table from 'react-bootstrap/esm/Table'
-import Row from 'react-bootstrap/esm/Row'
-import Col from 'react-bootstrap/esm/Col'
 import Container from 'react-bootstrap/esm/Container'
+import UnderConstruction from '../underConstruction/UnderConstruction'
 const Home = () => {
     return (
 
         <Container>
 
             <Navigation />
-            <h1>Home</h1>
-            <div>This Web this page is under construction </div>
+            <h2>Home Page</h2>
+            <UnderConstruction />
         </Container>
 
 
