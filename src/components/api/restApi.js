@@ -12,6 +12,6 @@ export const getEmployes = () => {
 
 //for posting
 export const saveEmployee = (body) => {
-   return axios.pots(EMPLOYEE_ADD_API_REST_URL,body);
+   return axios.post(EMPLOYEE_ADD_API_REST_URL,body);
 };
 
