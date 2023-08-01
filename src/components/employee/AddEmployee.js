@@ -6,7 +6,8 @@ import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
-import { saveEmployee } from '../api/restApi';
+import { saveEmployee } from '../api/restEmployeeApi';
+import { getDepartment } from '../api/restDepartmentApi';
 
 const AddEmployee = () => {
     const [employee, setEmployee] = useState({
@@ -15,12 +16,22 @@ const AddEmployee = () => {
         email: null,
         salary: null,
         departmentId: null,
-        hireDate:new Date("2022-03-25"),
-        phoneNumber:"515.123.8181",
-        jobId:"AC_ACCOUNT",
-        managerId:205
+        hireDate: new Date("2022-03-25"),
+        phoneNumber: "515.123.8181",
+        jobId: "AC_ACCOUNT",
+        managerId: 205
 
     });
+
+    const [department, setDepartment] = useState(null);
+
+    // List Users
+    useEffect(() => {
+        getDepartment()
+            .then(post => {
+                setDepartment(post.data)
+            });
+    }, [])
 
 
     function handleSubmit(e) {
@@ -28,7 +39,6 @@ const AddEmployee = () => {
         saveEmployee(employee)
             .then((res) => {
                 console.log(res.data)
-                alert("User Added successfully");
                 alert("User Added successfully");
             })
             .catch((err) => console.log(err))
@@ -63,7 +73,7 @@ const AddEmployee = () => {
                                     <Form.Control
                                         type="text"
                                         name='firstName'
-                                        value={employee.firstName}
+                                        value={employee.firstName || ''}
                                         onChange={onChange}
                                     />
                                 </Form.Group>
@@ -72,7 +82,7 @@ const AddEmployee = () => {
                                     <Form.Control
                                         type="text"
                                         name='lastName'
-                                        value={employee.lastName}
+                                        value={employee.lastName || ''}
                                         onChange={onChange}
                                     />
                                 </Form.Group>
@@ -82,33 +92,33 @@ const AddEmployee = () => {
                                     <Form.Control
                                         type="email"
                                         name='email'
-                                        value={employee.email}
+                                        value={employee.email || ''}
                                         onChange={onChange}
                                     />
                                 </Form.Group>
-
-
                                 <Form.Group className="mb-3" controlId="formBasicSalary">
                                     <Form.Label>Salary</Form.Label>
                                     <Form.Control
                                         type="number"
                                         name='salary'
-                                        value={employee.salary}
+                                        value={employee.salary || ''}
                                         onChange={onChange}
                                     />
                                 </Form.Group>
-
                                 <Form.Group className="mb-3" controlId="formBasicDeparment">
-                                    <Form.Label>Firs Name</Form.Label>
+                                    <Form.Label>Department</Form.Label>
                                     <Form.Select
-                                        value={employee.department}
                                         onChange={onChange}
                                         aria-label="Default select example"
                                         name='departmentId'>
                                         <option value="-1">Select Department</option>
-                                        <option value="10">One</option>
-                                        <option value="20">Two</option>
-                                        <option value="30">Three</option>
+                                        {department && department.map((dep) => {
+                                            return (
+                                                <option key={dep.departmentId} value={dep.departmentId}>
+                                                    {dep.departmentName}
+                                                </option>
+                                            );
+                                        })}
                                     </Form.Select>
 
                                 </Form.Group>

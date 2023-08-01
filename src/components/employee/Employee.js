@@ -8,7 +8,7 @@ import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card'
 import { useState,useEffect} from 'react';
 import Nav from 'react-bootstrap/Nav';
-import {getEmployes} from '../api/restApi';
+import {getEmployes} from '../api/restEmployeeApi';
 const Employee = () => {
 
     const [data, setData] = useState(null)
