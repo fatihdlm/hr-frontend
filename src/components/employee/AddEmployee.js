@@ -24,6 +24,8 @@ const AddEmployee = () => {
     });
 
     const [department, setDepartment] = useState(null);
+    const [pendingResponse, setPendingResponse] = useState(false)
+    const [errors, setErrors] = useState(null)
 
     // List Users
     useEffect(() => {
@@ -34,14 +36,28 @@ const AddEmployee = () => {
     }, [])
 
 
-    function handleSubmit(e) {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        saveEmployee(employee)
-            .then((res) => {
-                console.log(res.data)
-                alert("User Added successfully");
-            })
-            .catch((err) => console.log(err))
+        setPendingResponse(true);
+        try {
+            const result = await saveEmployee(employee);
+            console.log(result);
+        } catch (error) {
+            if(error.response.data.validationErrors)
+             setErrors(error.response.data.validationErrors);
+        }
+        setPendingResponse(false);
+        //another style
+        // .then((res) => {
+        //     console.log(res.data)
+        //     alert("User Added successfully");
+        //     setPendingResponse(false)
+
+        // })
+        // .catch((err) => {
+        //     console.log(err);
+        //     setPendingResponse(false)
+        // })
 
     }
 
@@ -56,8 +72,8 @@ const AddEmployee = () => {
         });
     }
 
-
     return (
+
         <Container>
 
             <Navigation />
@@ -70,12 +86,16 @@ const AddEmployee = () => {
                             <Form method='POST' onSubmit={handleSubmit}>
                                 <Form.Group className="mb-3" controlId="formBasicFirstName">
                                     <Form.Label>First Name</Form.Label>
-                                    <Form.Control
+                                    <Form.Control 
+                                        className={errors && errors.firstName?'form-control is-invalid':'form-control'}
                                         type="text"
                                         name='firstName'
                                         value={employee.firstName || ''}
                                         onChange={onChange}
                                     />
+                                    <div className="invalid-feedback">
+                                       {errors && errors.firstName || ''}
+                                    </div>
                                 </Form.Group>
                                 <Form.Group className="mb-3" controlId="formBasicLastName">
                                     <Form.Label>Last Name</Form.Label>
@@ -122,9 +142,13 @@ const AddEmployee = () => {
                                     </Form.Select>
 
                                 </Form.Group>
-                                <Button variant="primary" type="submit" className='float-end'>
+                                <Button variant="primary" type="submit" className='float-end' disabled={pendingResponse}>
+                                    {pendingResponse &&
+                                        <span className="spinner-border spinner-border-sm" />}
                                     Add Employee
+
                                 </Button>
+
                             </Form>
                         </Card.Body>
                     </Card>
