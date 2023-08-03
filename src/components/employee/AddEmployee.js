@@ -8,6 +8,7 @@ import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 import { saveEmployee } from '../api/restEmployeeApi';
 import { getDepartment } from '../api/restDepartmentApi';
+import Input from '../comps/Input';
 
 const AddEmployee = () => {
     const [employee, setEmployee] = useState({
@@ -43,8 +44,8 @@ const AddEmployee = () => {
             const result = await saveEmployee(employee);
             console.log(result);
         } catch (error) {
-            if(error.response.data.validationErrors)
-             setErrors(error.response.data.validationErrors);
+            if (error.response.data.validationErrors)
+                setErrors(error.response.data.validationErrors);
         }
         setPendingResponse(false);
         //another style
@@ -66,13 +67,21 @@ const AddEmployee = () => {
         const { name, value } = event.target;
         console.log(name)
         console.log(value)
+
+        if (errors) {
+            errors[name] = undefined;
+        }
+        setErrors(errors);
         setEmployee({
             ...employee,
-            [name]: value
+            [name]: value,
         });
     }
 
+
     return (
+
+
 
         <Container>
 
@@ -84,47 +93,11 @@ const AddEmployee = () => {
                         <Card.Header><h1>Add Employee</h1></Card.Header>
                         <Card.Body>
                             <Form method='POST' onSubmit={handleSubmit}>
-                                <Form.Group className="mb-3" controlId="formBasicFirstName">
-                                    <Form.Label>First Name</Form.Label>
-                                    <Form.Control 
-                                        className={errors && errors.firstName?'form-control is-invalid':'form-control'}
-                                        type="text"
-                                        name='firstName'
-                                        value={employee.firstName || ''}
-                                        onChange={onChange}
-                                    />
-                                    <div className="invalid-feedback">
-                                       {errors && errors.firstName || ''}
-                                    </div>
-                                </Form.Group>
-                                <Form.Group className="mb-3" controlId="formBasicLastName">
-                                    <Form.Label>Last Name</Form.Label>
-                                    <Form.Control
-                                        type="text"
-                                        name='lastName'
-                                        value={employee.lastName || ''}
-                                        onChange={onChange}
-                                    />
-                                </Form.Group>
+                                <Input name='firstName' label='First Name' onChange={onChange} error={errors?.firstName} type='text' />
+                                <Input name='lastName' label='Last Name' onChange={onChange} error={errors?.lastName} type='text' />
+                                <Input name='email' label='Email' onChange={onChange} error={errors?.email} type='email' />
+                                <Input name='salary' label='Salary' onChange={onChange} error={errors?.salary} type='number' />
 
-                                <Form.Group className="mb-3" controlId="formBasicEmail">
-                                    <Form.Label>Email</Form.Label>
-                                    <Form.Control
-                                        type="email"
-                                        name='email'
-                                        value={employee.email || ''}
-                                        onChange={onChange}
-                                    />
-                                </Form.Group>
-                                <Form.Group className="mb-3" controlId="formBasicSalary">
-                                    <Form.Label>Salary</Form.Label>
-                                    <Form.Control
-                                        type="number"
-                                        name='salary'
-                                        value={employee.salary || ''}
-                                        onChange={onChange}
-                                    />
-                                </Form.Group>
                                 <Form.Group className="mb-3" controlId="formBasicDeparment">
                                     <Form.Label>Department</Form.Label>
                                     <Form.Select
