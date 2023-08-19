@@ -7,8 +7,7 @@ import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card'
 import { useState,useEffect} from 'react';
-import Nav from 'react-bootstrap/Nav';
-import {getEmployes} from '../api/restEmployeeApi';
+import {getEmployeeById, getEmployes} from '../api/restEmployeeApi';
 const Employee = () => {
 
     const [data, setData] = useState(null)
@@ -22,6 +21,14 @@ const Employee = () => {
       }, [])
 
    
+      const employeeDetail=userId=>{
+        getEmployeeById(userId)
+        .then(post => {
+         console.log(post.data)
+        });
+        
+    }
+
 
     function deleteUser(userId){
         fetch('/users/'+userId,
@@ -70,7 +77,8 @@ const Employee = () => {
                                             <td>{item.phoneNumber}</td>
                                             <td>{item.departmentId}</td>
                                             <td width={250}>
-                                                <Button variant="primary"><Nav.Link href={`/employeeDetail/${item.employeeId}`}>Detail</Nav.Link></Button>{''}
+                                                {/* <Button variant="primary"><Nav.Link href={`/employeeDetail/${item.employeeId}`}>Detail</Nav.Link></Button>{''} */}
+                                                <Button variant="primary" onClick={()=>employeeDetail(item.employeeId)}>Detail</Button>{''}
                                                 <Button variant="danger" onClick={() => deleteUser(item.employeeId)}>Delete</Button>{' '}
                                                 <Button variant="success">Success</Button>{' '}</td>
                                         </tr>
